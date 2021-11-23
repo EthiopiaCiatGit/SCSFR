@@ -1,4 +1,4 @@
-**1. About the Repo**
+# 1. About the Repo
 
     This repository consists of R Scripts that can be used to downloaded different covariates that will be used for predicting fertilizer requirements and crop yields for an area of interest.
       
@@ -87,6 +87,7 @@
 **8. Useful Links**
 
  [https://www.isric.org/explore/soilgrids/faq-soilgrids](url)
+ 
  [https://github.com/mikejohnson51/climateR](url)
  [https://www.climatologylab.org/terraclimate.html](url)
 
