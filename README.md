@@ -17,7 +17,7 @@
               c) quantile - prediction quantiles (5% quantile, median of the distribution, mean of the distribution and 95% quantile)
               
               
-       ** 1.2 converSoilGRIDs.R**
+        **1.2 converSoilGRIDs.R**
         
             - used to convert download ISRIC Soil grids to their conventional units using a conversion factor
 
@@ -54,17 +54,39 @@
               b) aoi_path - the path of the area of interest
               
 **2. Steps to be taken**
+
     - fetchElevetion_slope_aspect_tpi.R and fetchTerraClim.R can be executed arbitrarily. However FetchSoilGRIDS.R & converSoilGRIDS.R should be executed in their order befor      the prevoius scripts. 
 
 **4. Requirements**
+
     - All the required packages should be installed before using the scripts. In addition GDAL (Geospatial Data Abstraction Library) should be installed; wcs_version =             "VERSION=2.0.1" works for gdal >=2.3.
+    - Install AIO and ClimateR using below command 
+            #remotes::install_github("mikejohnson51/AOI") 
+            #remotes::install_github("mikejohnson51/climateR")
 
 **6. Examples**
+
     i. fetchSoilGRID.R
     
         fetchSoilGrid("clay", "0-5cm", "mean")
     ii. converSoilGRIDs.R
     
-        converSoilGRIDs("clay", "0-5cm", "mean")
+        a) converSoilGRIDs("D:/soil", "D:/final_output")
+        b) converSoilGRIDs(sou_path = "D:/soil" , dest_path = "D:/final_output")
+        c) converSoilGRIDs(sou_path = "D:/soil")
+        
+    iii. fetchTerraClim.R
+        
+        a) fetchTerraClimate(param = "srad", aoi ="eth.shp", aoi_path = "D:/test", csv ="test_data.csv", csv_path = "D:/test_data")
+        
+    iv. fetchElevetion_slope_aspect_tpi.R
+        
+        a) fetchElevation(aoi = "tigray_prj", "D:/test")
+        b) fetchElevation(aoi = "bg_prj")
 
 **8. Useful Links**
+
+ [https://www.isric.org/explore/soilgrids/faq-soilgrids](url)
+ [https://github.com/mikejohnson51/climateR](url)
+ [https://www.climatologylab.org/terraclimate.html](url)
+
