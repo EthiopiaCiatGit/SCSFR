@@ -6,7 +6,7 @@
       
         **1.1 FetchSoilGRIDS.R**
         
-            - used to access and download ISRIC Soil grids of 250m resolution
+            - used to access and download ISRIC Soil grids of 250m resolution usning a Web Coverage Service (WCS).
 
              _ arguements _
               
@@ -17,7 +17,7 @@
               c) quantile - prediction quantiles (5% quantile, median of the distribution, mean of the distribution and 95% quantile)
               
               
-       ** 1.2 converSoilGRIDS.R**
+       ** 1.2 converSoilGRIDs.R**
         
             - used to convert download ISRIC Soil grids to their conventional units using a conversion factor
 
@@ -54,12 +54,17 @@
               b) aoi_path - the path of the area of interest
               
 **2. Steps to be taken**
-
+    - fetchElevetion_slope_aspect_tpi.R and fetchTerraClim.R can be executed arbitrarily. However FetchSoilGRIDS.R & converSoilGRIDS.R should be executed in their order befor      the prevoius scripts. 
 
 **4. Requirements**
-
+    - All the required packages should be installed before using the scripts. In addition GDAL (Geospatial Data Abstraction Library) should be installed; wcs_version =             "VERSION=2.0.1" works for gdal >=2.3.
 
 **6. Examples**
-
+    i. fetchSoilGRID.R
+    
+        fetchSoilGrid("clay", "0-5cm", "mean")
+    ii. converSoilGRIDs.R
+    
+        converSoilGRIDs("clay", "0-5cm", "mean")
 
 **8. Useful Links**
