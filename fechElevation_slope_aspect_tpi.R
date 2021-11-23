@@ -1,8 +1,5 @@
 # ------------------------------------------------------------------------------
 # Fetches elevation data from Amazon Web Services using and area of interest
-# Projects to (WGS 1984 UTM Zone 37N) calculates slope, aspect, tpi, tri and 
-# degree and exports the layers as a tiff
-# landform. The projection of the aoi should be in gcs_wgs_84
 # ------------------------------------------------------------------------------ 
 fetchElevation <- function(aoi, aoi_path = NULL){
   library(raster)
@@ -25,17 +22,14 @@ fetchElevation <- function(aoi, aoi_path = NULL){
   
 # ------------------------------------------------------------------------------
 # fetches data using elevatr package 
-  dem <- get_elev_raster(aoi, z = 8)
-  # utm <- "+proj=utm +zone=37 +datum=WGS84 +units=m +no_defs"
-  # dem <- projectRaster(dem, crs = utm, res = 250)
+  dem <- get_elev_raster(aoi, z = 11)
   
 # ------------------------------------------------------------------------------
 # derive slope and aspect
-  slope <- terrain(dem,opt='slope', unit='degrees') #slop
-  aspect <- terrain(dem,opt='aspect',unit='degrees') #aspect
-  tpi <- terrain(dem,opt='TPI') #topographic position index
-  tri <- terrain(dem,opt='TRI') #topographic ruggedness index 
-  # aoi <- st_transform(aoi, utm)
+  slope <- terrain(dem,opt='slope', unit='degrees') 
+  aspect <- terrain(dem,opt='aspect',unit='degrees') 
+  tpi <- terrain(dem,opt='TPI') 
+  tri <- terrain(dem,opt='TRI')  
   SD <- sd(tpi[],na.rm=T)
   landform <- reclassify(tpi, matrix(c(-Inf, -SD, 1,
                           -SD, -SD/2, 2,
@@ -107,6 +101,3 @@ fetchElevation <- function(aoi, aoi_path = NULL){
   )
 }
 
-#Example
-fetchElevation(aoi = "tigray_prj", "D:/tigray")
-fetchElevation(aoi = "bg_prj")

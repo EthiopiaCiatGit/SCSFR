@@ -1,3 +1,7 @@
+# ------------------------------------------------------------------------------
+# Fetches climate data from TerraClim
+# ------------------------------------------------------------------------------ 
+
 fetchTerraClimate <-
   function(param,
            aoi,csv, 
@@ -11,8 +15,6 @@ fetchTerraClimate <-
     library(raster)
     library(dplyr)
     
-# ------------------------------------------------------------------------------
-# aoi Layer and end date
     file_name <- as.character(param)
     aoi <- st_read(paste(dsn = aoi_path, layer = aoi, sep = "/"))
     csv <- read.csv(file = paste(csv_path, csv, sep = "/"), header = TRUE, sep = ",")
@@ -42,8 +44,8 @@ data3 <-
 data3 <- unique.data.frame(data3)
 start_date <- data3$plating_date2
 end_date <- data3$harvesting_date2
-# shape <- st_read("D:/tigray/tigray.shp")
 output <- list()
+
 for(i in 1:length(start_date)){
   pout = getTerraClim(AOI = aoi,
                       param = param,
@@ -67,5 +69,4 @@ for(i in 1:length(start_date)){
 }
   }
 
-#Example
-fetchTerraClimate(param = "srad", aoi ="tigray_prj.shp",aoi_path = "D:/tigray",csv ="test_data.csv", csv_path = "D:/extract_TerraClim_data")
+

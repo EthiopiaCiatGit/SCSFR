@@ -2,10 +2,9 @@
 # converting list of SoilGrid geo-tiff files using conversion factors
 # ------------------------------------------------------------------------------
 convertSoilGrids <- function(sou_path, dest_path = NULL){
-  # library(terra)
   library(raster)
-  # library(dplyr)
   library(rgdal)
+  
   setwd(sou_path)
   if(is.null(dest_path)){
     dest_path = getwd()
@@ -21,7 +20,8 @@ convertSoilGrids <- function(sou_path, dest_path = NULL){
         FUN = function(x) {
           x[1]
         }
-      ))) 
+      )))
+    
     for(i in 1:length(rasterlist_names) ) { 
       assign(rasterlist_names[i], raster(rasterlist[i])) 
       if(rasterlist_names[i] == ("nitrogen") ||

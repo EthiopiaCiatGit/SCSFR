@@ -1,7 +1,5 @@
 # ------------------------------------------------------------------------------   
-# Function to access and download ISRIC Soil grids of 250m resolution
-# Parameters to be added in the function - voi (text), depth(soil depth - text)
-# xmin, ymin, xmax and ymax all numbers
+# Function to access and download ISRIC Soil grids 
 # ------------------------------------------------------------------------------
 
 fetchSoilGrid <-
@@ -22,6 +20,8 @@ fetchSoilGrid <-
       gdalinfo = "gdalinfo"
     }
     
+# ------------------------------------------------------------------------------   
+# bbox and projection
     bbox <- c(32.999939, 14.899958, 47.986179, 3.322099)
     wgs <- "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
   
@@ -61,8 +61,7 @@ fetchSoilGrid <-
         "TILED=YES",
         "COMPRESS=DEFLATE",
         "PREDICTOR=2",
-        "BIGTIFF=YES",
-        "GDAL_HTTP_UNSAFESSL=YES"
+        "BIGTIFF=YES"
       ),
       verbose = TRUE
     )
