@@ -4,10 +4,10 @@
 
 fetchSoilGrid <-
   function(voi, depth, quantile) {
-    library(XML)
-    library(sf)
-    library(rgdal)
-    library(gdalUtils)
+    require(XML)
+    require(sf)
+    require(rgdal)
+    require(gdalUtils)
     
     if(.Platform$OS.type == "windows"){
       gdal.dir <- shortPathName("C:/Program Files/GDAL")

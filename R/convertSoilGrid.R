@@ -2,8 +2,8 @@
 # converting list of SoilGrid geo-tiff files using conversion factors
 # ------------------------------------------------------------------------------
 convertSoilGrids <- function(sou_path, dest_path = NULL){
-  library(raster)
-  library(rgdal)
+  require(raster)
+  require(rgdal)
   
   setwd(sou_path)
   if(is.null(dest_path)){

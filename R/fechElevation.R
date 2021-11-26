@@ -2,11 +2,11 @@
 # Fetches elevation data from Amazon Web Services using and area of interest
 # ------------------------------------------------------------------------------ 
 fetchElevation <- function(aoi, aoi_path = NULL){
-  library(raster)
-  library(sf)
-  library(rgl)
-  library(rgdal)
-  library(elevatr)
+  require(raster)
+  require(sf)
+  require(rgl)
+  require(rgdal)
+  require(elevatr)
   
 # ------------------------------------------------------------------------------
 # read area of interest 
@@ -22,7 +22,7 @@ fetchElevation <- function(aoi, aoi_path = NULL){
   
 # ------------------------------------------------------------------------------
 # fetches data using elevatr package 
-  dem <- get_elev_raster(aoi, z = 11)
+  dem <- get_elev_raster(aoi, z = 8)
   
 # ------------------------------------------------------------------------------
 # derive slope and aspect

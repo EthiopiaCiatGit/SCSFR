@@ -8,12 +8,12 @@ fetchTerraClimate <-
            aoi_path,
            csv_path) {
     
-    library(AOI)
-    library(rgdal)
-    library(climateR)
-    library(sf)
-    library(raster)
-    library(dplyr)
+    require(AOI)
+    require(rgdal)
+    require(climateR)
+    require(sf)
+    require(raster)
+    require(dplyr)
     
     file_name <- as.character(param)
     aoi <- st_read(paste(dsn = aoi_path, layer = aoi, sep = "/"))
