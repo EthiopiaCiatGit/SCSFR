@@ -5,19 +5,19 @@
       
 ## 2. Scripts
       
-#### 2.1 FetchSoilGRIDS.R
+#### 2.1 fetchSoilGRID.R
         
             used to access and download ISRIC Soil grids of 250m resolution usning a Web Coverage Service (WCS).
 **arguments** 
               
-              a) voi - the soil properties to be download
+              a) voi - the soil properties to be downloaded
                
               b) depth - six standard depth intervals which soil predictions are made
               
               c) quantile - prediction quantiles (5% quantile, median of the distribution, mean of the distribution and 95% quantile)
               
               
-#### 2.2 converSoilGRIDs.R
+#### 2.2 convertSoilGRID.R
         
             - used to convert download ISRIC Soil grids to their conventional units using a conversion factor
 
@@ -43,7 +43,7 @@
               
               e) csv_path - the path of the csv file
               
-#### 2.4 fetchElevetion_slope_aspect_tpi.R
+#### 2.4 fetchElevation.R
         
         used to download elevation data and calculate slope, aspect, topographic position index, 
         topographic ruggedness index and landform.
@@ -56,16 +56,14 @@
               
 ## 3. Steps to be taken
 
-    fetchElevetion_slope_aspect_tpi.R and fetchTerraClim.R can be executed arbitrarily. 
-    However FetchSoilGRIDS.R & converSoilGRIDS.R should be executed in their order before
-    the prevoius scripts. 
+    fetchElevetion and fetchTerraClim.R can be executed arbitrarily. However FetchSoilGRIDS.R & converSoilGRIDS.R 
+    should be executed in their order before the prevoius scripts. 
 
 ## 4. Requirements
 
-    - All the required packages should be installed before using the scripts. 
-        In addition GDAL (Geospatial Data Abstraction Library) should be installed; 
-        wcs_version ="VERSION=2.0.1" works for gdal >=2.3.
-    - Install AIO and ClimateR using below command 
+    - All the required packages should be installed before using the scripts. In addition GDAL (Geospatial Data Abstraction Library) 
+        should be installed for dwonloading soil covariates. wcs_version ="VERSION=2.0.1" works for gdal >=2.3.
+    - Install AIO and ClimateR for downloading climate covariates using below command 
             #remotes::install_github("mikejohnson51/AOI") 
             #remotes::install_github("mikejohnson51/climateR")
 
@@ -73,7 +71,7 @@
 ### i. fetchSoilGRID.R
     
         fetchSoilGrid("clay", "0-5cm", "mean")
-### ii. converSoilGRIDs.R
+### ii. convertSoilGRID.R
     
         a) converSoilGRIDs("D:/Test", "D:/Test2")
         b) converSoilGRIDs(sou_path = "D:/Test" , dest_path = "D:/Test2")
@@ -83,7 +81,7 @@
         
         a) fetchTerraClimate(param = "srad", aoi ="eth.shp", aoi_path = "D:/Test", csv ="test_data.csv", csv_path = "D:/Test_csv")
         
-#### iv. fetchElevetion_slope_aspect_tpi.R
+### iv. fetchElevetion.R
         
         a) fetchElevation(aoi = "eth", "D:/Test")
         b) fetchElevation(aoi = "eth")
