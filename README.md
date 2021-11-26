@@ -90,6 +90,6 @@
 
 ## 6. Useful Links
 
-1. [https://www.isric.org/explore/soilgrids/faq-soilgrids](url)
-2. [https://www.climatologylab.org/terraclimate.html](url)
-3. [https://github.com/mikejohnson51/climateR](url)
+1. [www.isric.org/explore/soilgrids/faq-soilgrids](https://www.isric.org/explore/soilgrids/faq-soilgrids)
+2. [www.climatologylab.org/terraclimate.html](https://www.climatologylab.org/terraclimate.html)
+3. [github.com/mikejohnson51/climateR](https://github.com/mikejohnson51/climateR)
