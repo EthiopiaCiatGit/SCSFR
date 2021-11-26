@@ -75,18 +75,18 @@
         fetchSoilGrid("clay", "0-5cm", "mean")
 ### ii. converSoilGRIDs.R
     
-        a) converSoilGRIDs("D:/soil", "D:/final_output")
-        b) converSoilGRIDs(sou_path = "D:/soil" , dest_path = "D:/final_output")
-        c) converSoilGRIDs(sou_path = "D:/soil")
+        a) converSoilGRIDs("D:/Test", "D:/Test2")
+        b) converSoilGRIDs(sou_path = "D:/Test" , dest_path = "D:/Test2")
+        c) converSoilGRIDs(sou_path = "D:/Test")
         
 ### iii. fetchTerraClim.R
         
-        a) fetchTerraClimate(param = "srad", aoi ="eth.shp", aoi_path = "D:/test", csv ="test_data.csv", csv_path = "D:/test_data")
+        a) fetchTerraClimate(param = "srad", aoi ="eth.shp", aoi_path = "D:/Test", csv ="test_data.csv", csv_path = "D:/Test_csv")
         
 #### iv. fetchElevetion_slope_aspect_tpi.R
         
-        a) fetchElevation(aoi = "tigray_prj", "D:/test")
-        b) fetchElevation(aoi = "bg_prj")
+        a) fetchElevation(aoi = "eth", "D:/Test")
+        b) fetchElevation(aoi = "eth")
 
 ## 6. Useful Links
 
