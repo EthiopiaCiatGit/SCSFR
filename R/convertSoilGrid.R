@@ -2,9 +2,11 @@
 # converting list of SoilGrid geo-tiff files using conversion factors
 # ------------------------------------------------------------------------------
 convertSoilGrids <- function(sou_path, dest_path = NULL){
-  library(raster)
-  library(rgdal)
+  require(raster)
+  require(rgdal)
+  
   setwd(sou_path)
+  
   if(is.null(dest_path)){
     dest_path = getwd()
   }
@@ -15,8 +17,7 @@ convertSoilGrids <- function(sou_path, dest_path = NULL){
   rasters <- lapply(rasterlist, raster)
   for(i in 1:length(rasters) ) { 
     if("bdod" %in% names(rasters[[i]]) ||
-       "nitrogen" %in% names(rasters[[i]])
-    )
+       "nitrogen" %in% names(rasters[[i]]))
     {
       rout <- rasters[[i]] * 0.01
     }else{
