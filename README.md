@@ -16,6 +16,10 @@
               
               c) quantile - prediction quantiles (5% quantile, median of the distribution, mean of the distribution and 95% quantile)
               
+              d) aoi - an area of interest mostly a shapefile
+              
+              e) aoi_path - the path of the area of interest
+              
               
 #### 2.2 convertSoilGRID.R
         
