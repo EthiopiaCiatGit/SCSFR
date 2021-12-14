@@ -5,9 +5,8 @@ The fertilizer recommendation focuses on predicting fertilizer nutrient and crop
 ## 1. Scripts
       
 #### 1.1 fetchSoilGRID.R
-        
-#### - Used to access and download ISRIC Soil grids of 250m resolution usning a Web Coverage Service (WCS).
-### **arguments** 
+- Used to access and download ISRIC Soil grids of 250m resolution usning a Web Coverage Service (WCS).
+- arguments 
               
     a) voi - the soil properties to be downloaded
 
@@ -21,20 +20,16 @@ The fertilizer recommendation focuses on predicting fertilizer nutrient and crop
 
               
 #### 1.2 convertSoilGRID.R
-        
-#### - used to convert download ISRIC Soil grids to their conventional units using a conversion factor
-
-**arguments**
+- Used to convert download ISRIC Soil grids to their conventional units using a conversion factor
+- arguments
               
     a) sou_path - the source path where the downloaded soil grids are located
 
     b) dest_path - the destination path for writing the output after conversion
               
-##### 1.3 fetchTerraClim.R
-        
-#### -  Used to download meteorological TerraClimate dataset.
-
-**arguments**
+#### 1.3 fetchTerraClim.R
+-  Used to download meteorological TerraClimate dataset.
+- arguments
               
     a) param - the climatic parameter to be downloaded
 
@@ -47,26 +42,22 @@ The fertilizer recommendation focuses on predicting fertilizer nutrient and crop
     e) csv_path - the path of the csv file
               
 #### 1.4 fetchElevation.R
-        
-#### - Used to download elevation data and calculate slope, aspect, topographic position index, topographic ruggedness index and landform.
-
-**arguments** 
+- Used to download elevation data and calculate slope, aspect, topographic position index, topographic ruggedness index and landform.
+- arguments
               
     a) aoi - an area of interest mostly a shapefile
 
     b) aoi_path - the path of the area of interest
               
 ## 2. Steps to be taken
-
-#### - fetchElevetion and fetchTerraClim.R can be executed arbitrarily. However FetchSoilGRIDS.R & converSoilGRIDS.R 
-should be executed in their order before the prevoius scripts. 
+fetchElevetion and fetchTerraClim.R can be executed arbitrarily. However FetchSoilGRIDS.R & converSoilGRIDS.R should be executed in their order before the prevoius scripts. 
 
 ## 3. Requirements
+- All the required packages should be installed before using the scripts. In addition GDAL (Geospatial Data Abstraction Library)should be installed for dwonloading soil covariates. wcs_version ="VERSION=2.0.1" works for gdal >=2.3.
+- Install AIO and ClimateR for downloading climate covariates using below commands
 
-#### - All the required packages should be installed before using the scripts. In addition GDAL (Geospatial Data Abstraction Library)should be installed for dwonloading soil covariates. wcs_version ="VERSION=2.0.1" works for gdal >=2.3.
-#### - Install AIO and ClimateR for downloading climate covariates using below commands
-    remotes::install_github("mikejohnson51/AOI") 
-    remotes::install_github("mikejohnson51/climateR")
+      remotes::install_github("mikejohnson51/AOI") 
+      remotes::install_github("mikejohnson51/climateR")
 
 ## 4. Examples
 #### i. fetchSoilGRID.R
