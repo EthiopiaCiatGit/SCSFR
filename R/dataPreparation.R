@@ -34,7 +34,7 @@ dataPreparation_Predict <-
   
 # ------------------------------------------------------------------------------ 
 # Mask rasters
-  aoi <- readOGR(dsn = aoi_path, layer = "habru")
+  aoi <- readOGR(dsn = aoi_path, layer = aoi)
   new_crs <- proj4string(grid)
   aoi <- spTransform(aoi, new_crs)
   grid2 <- mask(grid, aoi)
