@@ -33,8 +33,8 @@ predictFertilizer <- function(rda_file_path, nuitrent){
   
   
   rf_fitControl <- trainControl(method = "repeatedcv",
-                             number = 5,
-                             repeats = 3)
+                             number = 10,
+                             repeats = 5)
   
   rf_tuneGrid <- expand.grid(.mtry = mtry,
                              .splitrule =  "maxstat",
@@ -98,9 +98,19 @@ predictFertilizer <- function(rda_file_path, nuitrent){
   
 # ------------------------------------------------------------------------------
 #checking the stats and saving
-  stat <- ggof(sim = pred_test, obs = testing$yield, ftype = "o", gofs = c("ME", "MAE", "RMSE", "NRMSE", "PBIAS", "R2"))
+  stat <-
+    ggof(
+      sim = pred_test,
+      obs = testing$yield,
+      ftype = "o",
+      gofs = c("ME", "MAE", "RMSE", "NRMSE", "PBIAS", "R2")
+    )
   ggplot(stat)
-  ggsave(filename = paste0("./predict_output/", paste("stats", colnames(d)[i], sep = "_"), ".png"))
+  ggsave(filename = paste0(
+    "./predict_output/",
+    paste("stats", colnames(d)[i], sep = "_"),
+    ".png"
+  ))
 
 # ------------------------------------------------------------------------------
 # predict using spatial grid data frame

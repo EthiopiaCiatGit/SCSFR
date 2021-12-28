@@ -84,37 +84,28 @@ dataPreparation_Predict <-
   bin_var <- model.matrix(as.formula(paste0("~","landform","+0")), other_data_sgdf)
   bin_var2 <- as.data.frame(bin_var)
   bin_var3 <- lapply(bin_var2, FUN = factor)
-  glimpse(bin_var3)
   bin_var_final <- as.data.frame(bin_var3)
   
   sgdf <- data.frame(other_data_sgdf, clim_data_sgdf, bin_var_final)# spatial grid data frame
   sgdf <- dplyr::select(sgdf, -"landform") # remove original landform
-  glimpse(sgdf)
   
 # ------------------------------------------------------------------------------
 # excluding zero & near zero variance variables
   nzv <- nearZeroVar(sgdf, saveMetrics = TRUE) #df of predictor info returned
-  head(nzv)
-  summary(nzv$zeroVar)
-  summary(nzv$nzv)
   sgdf <- sgdf[,!nzv[,4]]#nzv stored in the 4th column of nzv - remove
-  colnames(sgdf)
-  nrow(sgdf)
+
 # ------------------------------------------------------------------------------
 # Rearrange the columns
   sgdf_s1s2 <- dplyr::select(sgdf, "s1", "s2")
   sgdf_other <- dplyr::select(sgdf, -c("s1", "s2"))
   sgdf_final <- data.frame(sgdf_s1s2, sgdf_other)
   sgdf_final <- unique(na.omit(sgdf_final))
-  glimpse(sgdf_final)
-  
   save(sgdf_final, file = paste0("./output/","sgdf_final_output", ".rda"))
 
 # ------------------------------------------------------------------------------
 # Convert back to Spatial Grid Data frame
   gridded(sgdf_final) <- ~s1+s2
   proj4string(sgdf_final) <- new_crs
-  class(sgdf_final)
   
 # ------------------------------------------------------------------------------
 # read csv data and convert to spatial
@@ -126,8 +117,6 @@ dataPreparation_Predict <-
 # extracting values by points
   grid_val <- over(points, sgdf_final) #overlay
   grid_val2 <- as.data.frame(grid_val)
-  glimpse(grid_val2)
-  nrow(grid_val2)
   
 # ------------------------------------------------------------------------------
 # binding response variables and predictor data
@@ -137,8 +126,7 @@ dataPreparation_Predict <-
   
   data_pred_npks <- cbind(points@coords, yield, grid_val2)
   data_pred_npks <- unique(na.omit(data_pred_npks))
-  glimpse(data_pred_npks)
   covs_yield <- data_pred_npks[, 3:ncol(data_pred_npks)]#covariates & yield
-  save(covs_yield, file = paste0("./output/","regression_table", ".rda"))
+  save(covs_yield, file = paste0("./output/","regression_matrix", ".rda"))
 }
 
