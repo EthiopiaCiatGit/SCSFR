@@ -50,7 +50,7 @@ The fertilizer recommendation focuses on predicting fertilizer nutrient and crop
     b) aoi_path - the path of the area of interest
               
 ## 2. Steps to be taken
-fetchElevetion and fetchTerraClim.R can be executed arbitrarily. However FetchSoilGRIDS.R & converSoilGRIDS.R should be executed in their order before the prevoius scripts. 
+fetchElevetion and fetchTerraClim.R can be executed arbitrarily. However FetchSoilGRIDS.R & converSoilGRIDS.R should be executed in their order before the prevoius scripts. Besides the dataPreparation.R and Prediction.R should be excuted in their order after the other scripts. 
 
 ## 3. Requirements
 - All the required packages should be installed before using the scripts. In addition GDAL (Geospatial Data Abstraction Library)should be installed for dwonloading soil covariates. wcs_version ="VERSION=2.0.1" works for gdal >=2.3.
@@ -74,6 +74,13 @@ fetchElevetion and fetchTerraClim.R can be executed arbitrarily. However FetchSo
 
     a) fetchElevation(aoi = "eth", "D:/Test")
     b) fetchElevation(aoi = "eth")
+#### v. dataPreparation.R
+
+    a) dataPreparation("D:/Test", "test.csv", "D:/Test", "eth", "D:/Test")
+#### vi. prediction.R
+
+    a) prediction("D:/Test", "N")
+    b) prediction("D:/Test", "S")
 
 ## 5. Useful Links
 
