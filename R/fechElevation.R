@@ -22,15 +22,15 @@ fetchElevation <- function(aoi, aoi_path = NULL){
   
 # ------------------------------------------------------------------------------
 # fetches data using elevatr package 
-  dem <- get_elev_raster(aoi, z = 8)
+  dem <- get_elev_raster(aoi, z = 9)
   
 # ------------------------------------------------------------------------------
 # derive slope and aspect
-  slope <- terrain(dem,opt='slope', unit='degrees') 
-  aspect <- terrain(dem,opt='aspect',unit='degrees') 
-  tpi <- terrain(dem,opt='TPI') 
-  tri <- terrain(dem,opt='TRI')  
-  SD <- sd(tpi[],na.rm=T)
+  slope <- terrain(dem, opt = 'slope', unit = 'degrees')
+  aspect <- terrain(dem, opt = 'aspect', unit = 'degrees')
+  tpi <- terrain(dem, opt = 'TPI')
+  tri <- terrain(dem, opt = 'TRI')
+  SD <- sd(tpi[], na.rm = T)
   landform <- reclassify(tpi, matrix(c(-Inf, -SD, 1,
                           -SD, -SD/2, 2,
                           -SD/2, 0, 3,
