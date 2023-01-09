@@ -23,6 +23,8 @@ fetchSoilGrid <-
     
     url <- "/vsicurl/https://files.isric.org/soilgrids/latest/data/"
     
+# ------------------------------------------------------------------------------   
+# layer of interest
     cov <- voi 
     soil_dep <- depth
     quant <- quantile

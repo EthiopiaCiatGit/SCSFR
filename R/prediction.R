@@ -1,153 +1,89 @@
 # ------------------------------------------------------------------------------
-# Reads rda output to predict optimal yield
-predictFertilizer <- function(rda_file_path, nuitrent){
-  require(rgdal)
-  require(raster)
-  require(caret)
-  require(ranger)
-  require(dplyr)
-  require(e1071)
-  require(randomForest)
-  require(sp)
-  require(hydroGOF)
-  require(Metrics)
-  require(ggplot2)
-  
-  dir.create("predict_output", showWarnings = F)
-  
-# ------------------------------------------------------------------------------
-# loading the rda outputs and adding to the global env
-  rda_files <- list.files(path = rda_file_path, pattern = ".rda")
-  lapply(rda_files,load,.GlobalEnv)
-  
-  new_crs <- "+proj=longlat +datum=WGS84 +no_defs"
-  
-# ------------------------------------------------------------------------------
-# Create training and testing data set
-  mtry <- as.integer((ncol(covs_yield))/3)
-  mtry <- seq(mtry-10, mtry+10, by = 3)
+# souring data preparation script
 
-# ------------------------------------------------------------------------------ 
-# model calibration and validation
-  set.seed(7)
+  #rm(list = ls())
+  setwd(path_to_input_script)
+  source("input.R")
+
+# ------------------------------------------------------------------------------
+# extracting values by points
+  message(noquote("Extracting point vaues..."))
+  cov_soil_land <- stack_normal[[c(1:17)]]#stack of soil and landform
+  grid_val <- extract(cov_soil_land, points)
+  cov_train <- cbind(grid_val, points_train) # covariates, yield & nps
+  cov_train <- cov_train[complete.cases(cov_train),]
+  #cov_train$landform <- as.factor(cov_train$landform)
+  #cov_train$soil_type <- as.factor(cov_train$soil_type)
+  yield_nps <- dplyr::select(cov_train, c("n","p","k", "yield"))
+  cov_train <- dplyr::select(cov_train, -c("n","p","k", "yield"))
+  cov_train <- cbind(cov_train, yield_nps)
+  cov_train <- unique(na.omit(cov_train[, 1:ncol(cov_train)])) #removing NAs and duplicates
+  cov_train <- cov_train[(which(cov_train$yield <= 15000)), ]
   
+  setwd(path_to_output)
+  save(cov_train, file = paste0("regression_matrix", ".RData"))
+  
+  # training
+  set.seed(123)
+  mtry <- as.integer((ncol(cov_train))/3) #this will be optimized
+  mtry <- seq(mtry - 8, mtry + 8, by = 2)
   
   rf_fitControl <- trainControl(method = "repeatedcv",
-                             number = 10,
-                             repeats = 5)
+                                number = 10,
+                                repeats = 5)
   
   rf_tuneGrid <- expand.grid(.mtry = mtry,
                              .splitrule =  "maxstat",
                              .min.node.size = c(20, 30))
   
-  dir.create("tmp", showWarnings = F)
-  if(nuitrient == "N"){
-    trail_leng <- 200
-    by <- 10
-  }
-  else if(nuitrient == "P"){
-    trail_leng <- 60
-    by <- 5
-  }
-  else if(nuitrient == "K"){
-    trail_leng <- 60
-    by <- 5
-  }
-  else (nuitrient == "S"){
-    trail_leng <- 50
-    by <- 5
-  }
+  inTrain <- createDataPartition(y =  cov_train$yield, p = 0.70, list = FALSE)
+  training <- cov_train[inTrain,]
+  testing <- cov_train[-inTrain,]
   
-  vals <- c(seq(0, trail_leng, by = by))
-  d <- data.frame(matrix(ncol = length(vals), nrow = nrow(covs_yield)))
-  d_test <- data.frame(matrix(ncol = length(vals), nrow = nrow(covs_yield)))
-  for(i in 1:length(vals)){
-    names(d)[i] <- paste0(nuitrient,vals[i])
-    d[,i] <- vals[i]
-  }
-  
-  for(i in 1:ncol(d)){
-    set.seed(7)
-    rate <- d[,i]
-    data_pred <- cbind(covs_yield,rate)
-    inTrain <- createDataPartition(y =  data_pred$yield, p = 0.75, list = FALSE)
-    training <- data_pred[inTrain,]
-    testing <- data_pred[-inTrain,]
-    
-      mod_fit <- train(
-        yield ~ .,
-        data = training,
-        method = "ranger",
-        trControl = rf_fitControl,
-        importance = 'impurity',
-        tuneGrid = rf_tuneGrid,
-        preProcess = c('scale', 'center')
-      )
-
+  message(noquote("Training the model..."))
+  mod_fit <- train(
+    yield ~ .,
+    data = training,
+    method = "ranger",
+    trControl = rf_fitControl,
+    importance = 'impurity',
+    tuneGrid = rf_tuneGrid,
+    preProcess = c('scale', 'center'))
+  save(mod_fit, file = paste0("model_with_soil", ".RData"), Overwrite = T)
 # ------------------------------------------------------------------------------  
-# Plot and save variable importance
+# Plot and save variable importance and testing
   var_imp <- varImp(mod_fit)
   ggplot(var_imp)
   
-  ggsave(filename =
-           paste0(
-             "./predict_output/",
-             paste("variable_importance", colnames(d)[i], sep = "_"),
-             ".png"
-           ))
+  ggsave(filename = "variable_importance.png", width = 20, height = 10)
   
-# ------------------------------------------------------------------------------
-#checking the stats and saving
-  stat <-
-    ggof(
-      sim = pred_test,
-      obs = testing$yield,
-      ftype = "o",
-      gofs = c("ME", "MAE", "RMSE", "NRMSE", "PBIAS", "R2")
-    )
-  ggplot(stat)
-  ggsave(filename = paste0(
-    "./predict_output/",
-    paste("stats", colnames(d)[i], sep = "_"),
-    ".png"
-  ))
-
-# ------------------------------------------------------------------------------
-# predict using spatial grid data frame
-  data <- data.frame(matrix(c(d[1,i]), ncol = 1, nrow = nrow(sgdf_final)))
-  colnames(data) <- paste(nuitrent, "rate", sep = "_")
-  data <- cbind(sgdf_final,data)
-  pred_grid <- predict(mod_fit, data)
-
-# ------------------------------------------------------------------------------
-# converting to spatial grid data frame Exporting the prediction as raster
-  pred_grid_sp <-
-    data.frame(x = data$s1, y = data$s2, pred_grid)
-  gridded(pred_grid_sp) <- ~x+y
-  proj4string(pred_grid_sp) <- new_crs
- 
-  writeGDAL(
-    pred_grid_sp,
-    fname = paste0("./tmp/", paste(nuitrent,"predicted", i, sep = "_"),".tif"),
-    drivername = "Gtiff",
-    type = "Float32",
-    options = "COMPRESS=DEFLATE"
-  )
+# ------------------------------------------------------------------------------  
+# Multiple iteration
+  N <- c(seq(0, 75, 15), seq(100, 200, 25)) #this will be optimized
+  P <- K <- N[1:7]
+  # P <- K <- N[1:3]
+  npk <- expand.grid(N = N, P = P, K = K)
+  
+#loop for climate forcast scenario
+  setwd(path_to_output)
+  path <- "yield_normal"
+  dir.create(path, FALSE, TRUE)
+  a <- apply(npk, 1, function(i) paste(i, collapse="."))
+  f <- file.path(path, paste0("yield.", a, ".tif"))
+  setwd(path_to_output)
+  message(noquote("Predicting yield"))
+  pb <- txtProgressBar(min = 0, max = n_iter, style = 3, width = 50, char = "=")
+  for (i in 1:nrow(npk)) {
+    if (file.exists(f[i])) next
+    NPK <- data.frame(n = npk$N[i], p = npk$P[i], k = npk$K[i])
+      predict(
+        stack_normal, # use below normal, average and above average
+        mod_fit,
+        const = NPK,
+        filename = f[i],
+        overwrite = TRUE,
+        wopt = list(datatype = "INT2S", names = a[i])
+      )
   }
-
-# ------------------------------------------------------------------------------
-# generating optimal yield
-  setwd("tmp")
-  yield <- list.files(path = ".", pattern = ".tif$", all.files = T)
-  yield_ras <- lapply(yield, raster)
-  yield_stack <- stack(yield_ras)
-  optimal_yield <- max(yield_stack)
-  writeRaster(
-    optimal_yield,
-    filename = paste(nuitrent, "optimal_yield", sep = "_"),
-    format = "GTiff",
-    overwrite = TRUE
-  )
-}
 
   
