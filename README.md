@@ -74,13 +74,6 @@ fetchElevetion and fetchTerraClim.R can be executed arbitrarily. However FetchSo
 
     a) fetchElevation(aoi = "eth", "D:/Test")
     b) fetchElevation(aoi = "eth")
-#### v. dataPreparation.R
-
-    a) dataPreparation("D:/Test", "test.csv", "D:/Test", "eth", "D:/Test")
-#### vi. prediction.R
-
-    a) prediction("D:/Test", "N")
-    b) prediction("D:/Test", "S")
 
 ## 5. Useful Links
 
