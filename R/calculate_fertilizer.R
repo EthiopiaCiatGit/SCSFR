@@ -2,7 +2,7 @@
 #Script to calculate nps, urea, compost and vermi compost
 #-------------------------------------------------------------------------------
 
-calc_nps_urea <- function(s_path, n, p, d_path){
+calc_fertilizer <- function(s_path, n, p, d_path){
   
     setwd(s_path)
     n <- raster(n)
