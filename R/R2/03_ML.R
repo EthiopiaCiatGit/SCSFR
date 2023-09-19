@@ -84,7 +84,7 @@ model_caliPredict <- function(covs_csv_path, covs_csv, stack_path, stack,
   
   message(noquote("Training the model..."))
   mod_fit <- train(
-    yield ~ .,
+    gr_yield ~ .,
     data = training,
     method = "ranger",
     trControl = rf_fitControl,
