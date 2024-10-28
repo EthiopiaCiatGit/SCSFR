@@ -1,5 +1,7 @@
 #------------------------------------------------------------------------------   
-# Function to access and download ISRIC Soil grids 
+# Function to access and download ISRIC Soil grids. Currently we have access to 
+# EthioSIS soil parameter layers and we access them locally since they are not 
+# publicly available freely (check https://nsis.moa.gov.et/geoportal/).
 # ------------------------------------------------------------------------------
 
 #' @param voi - variable of interest to be downloaded (bdod, clay, sand, ...)
@@ -115,7 +117,8 @@ convertSoilGrids <- function(sou_path, dest_path = NULL){
 
 
 # ------------------------------------------------------------------------------
-# Fetches elevation data from Amazon Web Services using and area of interest
+# Fetches elevation data from Amazon Web Services using and area of interest. 
+# Currently we are using SRTM DEM downloaded and stored in CGLabs.
 # ------------------------------------------------------------------------------ 
 
 #' @param aoi - a shapefile for the study area
@@ -284,7 +287,7 @@ fetchClimData <- function(inp_wd, aoi, st_date, en_date){
 
 
 # --------------------------------------------------------------------
-# A function for accessing trial data from EIAR data-verse
+# A function for accessing trial data
 # --------------------------------------------------------------------
 
 #' @param inp_wd - input working directory
